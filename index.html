@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+
+        <style>
+            input[disabled] {
+                opacity: .5;
+            }
+
+            .error {
+                border: 1px solid #ee0100;
+            }
+
+            input, button {
+                outline: none;
+                padding: 5px;
+            }
+        </style>
+
+    </head>
+    <body ng-app="MyApp">
+        <main ng-controller="MainController">
+            <form name="colorsForm" ng-submit="addNewColor($event, colorsForm.$valid)" novalidate>
+                <!--<input type="text" placeholder="Color name" ng-model="newColor.name">
+                <button ng-click="removeColor()">Remove</button>-->
+                <input type="text" placeholder="Color name" name="colorName" ng-model="newColor.name" ng-pattern="/^[A-Za-z]{3,}$/" ng-class="{ 'error' : colorsForm.colorName.$invalid && !colorsForm.colorName.$pristine }" required="required">
+                <input type="text" placeholder="Hex" name="colorHex" ng-model="newColor.hex" ng-disabled="newColor.mode == 'server'"ng-pattern="/^#[A-Za-z0-9]{3,6}$/" ng-class="{ 'error' : colorsForm.colorHex.$invalid && !colorsForm.colorHex.$pristine }" required="required">
+                <!--<button ng-disabled="colorsForm.$invalid">Add</button>-->
+                <button>Add</button>
+                <br><br>
+
+                <input type="radio" name="mode" ng-model="newColor.mode" value="manual" checked> Manual
+                <input type="radio" name="mode" ng-model="newColor.mode" value="server"> Server
+            </form>
+
+            <ul>
+                <li ng-repeat="color in colors" ng-style="{'color': color.hex}" ng-click="showColor(color)">
+                    {{ color.name | capitalize }}
+                    <button ng-click="removeByIndex($index)">X</button>
+                </li>
+            </ul>
+
+            <!--
+            <form>
+                <input type="input" placeholder="Color name" ng-model="newColor">
+                <br><br>
+                <button ng-click="addNewColor()">Add</button>
+            </form>
+            -->
+        </main>
+
+        <script src="app.js"></script>
+        <script src="ctrl.js"></script>
+        <script src="filter.js"></script>
+        <script src="LocalStorageColorsFactory.js"></script>
+        <script src="APIColorsFactory.js"></script>
+        <script src="vendor/angular.min.js"></script>
+    </body>
+</html>
